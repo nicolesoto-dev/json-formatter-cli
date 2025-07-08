@@ -3,7 +3,9 @@ package main
 import (
 	"flag"
 	"fmt"
-	//"github.com/nicolesoto-dev/json-formatter-cli/formatter"
+	"log"
+
+	"github.com/nicolesoto-dev/json-formatter-cli/formatter"
 )
 
 type Options struct {
@@ -24,7 +26,26 @@ func main() {
 	flag.BoolVar(&options.prettify, "prettify", false, "Prettify json output")
 
 	flag.Parse()
-	input := flag.Arg(0)
 
-	fmt.Println("Flags parsed:", options.file, input)
+	if options.file == "" {
+		log.Fatal("Please provide a --file path")
+	}
+
+	result, err := formatter.ReadFile(options.file, formatter.FlagOpts{
+		Validate: options.validate,
+		Minify:   options.minify,
+		Prettify: options.prettify,
+		Output:   options.output,
+	})
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if options.output {
+		fmt.Println(result)
+	}
+
+	fmt.Println(result)
+
 }
