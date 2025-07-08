@@ -30,7 +30,7 @@ func ProcessJSON(data []byte, opts FlagOpts) (string, error) {
 	if opts.Validate {
 		err := json.Unmarshal(data, &v)
 		if err != nil {
-			return "error:", err
+			return "", fmt.Errorf("invalid JSON: %w", err)
 		}
 	}
 
@@ -38,12 +38,17 @@ func ProcessJSON(data []byte, opts FlagOpts) (string, error) {
 		return "JSON is valid", nil
 	}
 
-	if opts.Prettify {
-		json.Indent(&prettyJSON, data, "", "  ")
-	}
-
-	if opts.Minify {
-		json.Compact(&prettyJSON, data)
+	switch {
+	case opts.Minify:
+		err := json.Compact(&prettyJSON, data)
+		if err != nil {
+			return "", fmt.Errorf("failed to prettify JSON: %w", err)
+		}
+	case opts.Prettify:
+		err := json.Indent(&prettyJSON, data, "", "  ")
+		if err != nil {
+			return "", fmt.Errorf("failed to prettify JSON: %w", err)
+		}
 	}
 	return prettyJSON.String(), nil
 }
