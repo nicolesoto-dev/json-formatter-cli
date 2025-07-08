@@ -19,3 +19,5 @@ go.work.sum
 .vscode/
 
 example.json
+
+jsonfmt
