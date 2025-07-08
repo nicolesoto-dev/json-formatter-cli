@@ -45,7 +45,4 @@ func main() {
 	if options.output {
 		fmt.Println(result)
 	}
-
-	fmt.Println(result)
-
 }
