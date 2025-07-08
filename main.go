@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	//"github.com/nicolesoto-dev/json-formatter-cli/formatter"
 )
 
 type Options struct {
@@ -26,9 +27,4 @@ func main() {
 	input := flag.Arg(0)
 
 	fmt.Println("Flags parsed:", options.file, input)
-	formatter.hello()
 }
-
-//process file
-// create new file
-// put converted into the file
