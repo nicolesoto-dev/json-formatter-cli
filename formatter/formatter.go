@@ -26,7 +26,7 @@ func ReadFile(filePath string, opts FlagOpts) (string, error) {
 		return "", errors.New("invalid file path")
 	}
 
-	data, err := os.ReadFile(filePath)
+	data, err := os.ReadFile(cleanPath)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file: %w", err)
 	}
