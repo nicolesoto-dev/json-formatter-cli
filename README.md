@@ -19,7 +19,7 @@ A lightweight command-line tool to validate, minify, and prettify JSON files.
 3. **Add the following line (replace $PACKAGE_PATH with the actual binary path):**
 
    ```bash
-   'alias jsonfmt='$PACKAGE_PATH''
+   alias jsonfmt='$PACKAGE_PATH'
    ```
 
 4. **Then reload your shell config:**
