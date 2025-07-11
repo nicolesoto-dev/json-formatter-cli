@@ -3,8 +3,11 @@ package formatter
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
+	"strings"
 )
 
 type FlagOpts struct {
@@ -14,7 +17,15 @@ type FlagOpts struct {
 	Output   bool
 }
 
+const baseDir = "~"
+
 func ReadFile(filePath string, opts FlagOpts) (string, error) {
+	cleanPath := filepath.Join(baseDir, filepath.Clean("/"+filePath))
+
+	if !strings.HasPrefix(cleanPath, baseDir) {
+		return "", errors.New("invalid file path")
+	}
+
 	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file: %w", err)
