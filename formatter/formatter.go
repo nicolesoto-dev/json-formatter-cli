@@ -17,13 +17,16 @@ type FlagOpts struct {
 	Output   bool
 }
 
-const baseDir = "~"
-
 func ReadFile(filePath string, opts FlagOpts) (string, error) {
+	baseDir, err := os.UserHomeDir()
+	if err != nil {
+		return "", fmt.Errorf("cannot get working directory: %w", err)
+	}
+
 	cleanPath := filepath.Join(baseDir, filepath.Clean("/"+filePath))
 
 	if !strings.HasPrefix(cleanPath, baseDir) {
-		return "", errors.New("invalid file path")
+		return "", errors.New("invalid file path: outside of allowed directory")
 	}
 
 	data, err := os.ReadFile(cleanPath)
