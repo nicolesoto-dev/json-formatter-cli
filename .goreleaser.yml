@@ -1,3 +1,9 @@
+version: 2
+project_name: json-formatter-cli
+
+snapshot:
+  version_template: '{{ .Tag }}-SNAPSHOT'
+
 before:
   hooks:
     - go mod tidy
@@ -24,7 +30,7 @@ source:
   enabled: true
 
 archives:
-  - format: tar.gz
+  - formats: ["zip", "tar.gz"]
     name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
