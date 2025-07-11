@@ -3,7 +3,6 @@ package formatter
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -23,13 +22,16 @@ func ReadFile(filePath string, opts FlagOpts) (string, error) {
 		return "", fmt.Errorf("cannot get working directory: %w", err)
 	}
 
-	cleanPath := filepath.Join(baseDir, filepath.Clean("/"+filePath))
-
-	if !strings.HasPrefix(cleanPath, baseDir) {
-		return "", errors.New("invalid file path: outside of allowed directory")
+	absoluteFilePath, err := filepath.Abs(filepath.Clean(filePath))
+	if err != nil {
+		return "", fmt.Errorf("invalid file path: %w", err)
 	}
 
-	data, err := os.ReadFile(cleanPath)
+	if !strings.HasPrefix(absoluteFilePath, baseDir) {
+		return "", fmt.Errorf("access to path %q is not allowed", absoluteFilePath)
+	}
+
+	data, err := os.ReadFile(absoluteFilePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file: %w", err)
 	}
