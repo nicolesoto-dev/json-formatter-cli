@@ -31,6 +31,8 @@ func ReadFile(filePath string, opts FlagOpts) (string, error) {
 		return "", fmt.Errorf("access to path %q is not allowed", absoluteFilePath)
 	}
 
+	// #nosec G304
+
 	data, err := os.ReadFile(absoluteFilePath)
 	if err != nil {
 		return "", fmt.Errorf("failed to read file: %w", err)
